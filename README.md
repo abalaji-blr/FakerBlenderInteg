@@ -33,7 +33,7 @@ Build data pipeline using Python Faker Library with Blender.
 
 ### Snapshot of Blender's Custom Node for Faker providers
 
-<img src="./images/BlenderCustNode1.png" alt="BlenderCustNode1" style="zoom:100%;" />
+<img src="./images/BlenderCustNodeAll.png" alt="BlenderCustNode1" style="zoom:100%;" />
 
 
 

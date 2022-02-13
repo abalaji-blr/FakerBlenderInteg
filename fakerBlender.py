@@ -149,24 +149,25 @@ class MyCustomPhoneNumber(Node, MyCustomTreeNode):
     extn_int_prop = bpy.props.IntProperty()
     
     def init(self, context):
-        self.inputs.new('NodeSocketString', 'Country Code')
+        #self.inputs.new('NodeSocketString', 'Country Code')
         self.inputs.new('NodeSocketString',  'Phone Number')
         #self.inputs.new('NodeSocketInt',     'Extension')
         
         self.outputs.new('NodeSocketString', 'Phone Number')
         
     def update(self):
-        self.inputs['Country Code'].default_value = fake.country_calling_code()
+        #self.inputs['Country Code'].default_value = fake.country_calling_code()
         
         if 'Phone Number' in self.inputs:
             self.inputs['Phone Number'].default_value = fake.phone_number()
         
         if 'Phone Number' in self.outputs:
             #prop exists
-            out = self.inputs['Country Code'].default_value + ' ' + \
-            self.inputs['Phone Number'].default_value
+            #out = self.inputs['Country Code'].default_value + ' ' + \
+            #self.inputs['Phone Number'].default_value
             
-            self.outputs['Phone Number'].default_value = out
+            self.outputs['Phone Number'].default_value = self.inputs['Phone Number'].default_value
+            print('Phone Number - Out - ', self.outputs['Phone Number'].default_value)
             
             # process out links
             for link in self.outputs['Phone Number'].links:
@@ -188,6 +189,20 @@ class MyCustomCompanyName(Node, MyCustomTreeNode):
         
         self.outputs.new('NodeSocketString', 'Company Name')
         
+    def update(self):
+        self.inputs['Company Name'].default_value = fake.company()
+        
+        if 'Suffix' in self.inputs:
+            self.inputs['Suffix'].default_value = fake.company_suffix()
+            
+        if 'Company Name' in self.outputs:
+            self.outputs['Company Name'].default_value = self.inputs['Company Name'].default_value
+            
+            for link in self.outputs['Company Name'].links:
+                link.to_socket.default_value = self.outputs['Company Name'].default_value
+                
+
+        
 #Bank Account Number, Citibank, Acct Num
 class MyCustomBankAccount(Node, MyCustomTreeNode):
     bl_idname = 'CustomNodeBAccountType'
@@ -197,11 +212,28 @@ class MyCustomBankAccount(Node, MyCustomTreeNode):
     bank_acct_num = bpy.props.StringProperty()
     
     def init(self, context):
-        self.inputs.new('NodeSocketString', 'Bank Name')
+        self.inputs.new('NodeSocketString', 'Routing Number')
         self.inputs.new('NodeSocketString', 'Account Number')
         
         self.outputs.new('NodeSocketString', 'Account Number')
         
+    def update(self):
+        self.inputs['Routing Number'].default_value = fake.aba()
+        
+        if 'Account Number' in self.inputs:
+            # basic bank account number
+            self.inputs['Account Number'].default_value = fake.bban()
+            
+        if 'Account Number' in self.outputs:
+            out = self.inputs['Routing Number'].default_value + '  ' + \
+            self.inputs['Account Number'].default_value
+            
+            self.outputs['Account Number'].default_value = out
+            
+            for link in self.outputs['Account Number'].links:
+                link.to_socket.default_value = self.outputs['Account Number'].default_value
+            
+
 
 # Credit Card Info.
 # 'Discover\nKatherine Fisher\n6587647593824218 05/26\nCVC: 892\n'
@@ -216,13 +248,39 @@ class MyCustomCreditCard(Node, MyCustomTreeNode):
     
     def init(self, context):
         self.inputs.new('NodeSocketString', 'Type')
-        self.inputs.new('NodeSocketInt', 'Number')
+        self.inputs.new('NodeSocketString', 'Number')
         self.inputs.new('NodeSocketString', 'Expiry')
-        self.inputs.new('NodeSocketInt', 'CVV')
+        self.inputs.new('NodeSocketString', 'CVV')
         
-        self.outputs.new('NodeSocketInt', 'Number')
+        self.outputs.new('NodeSocketString', 'Number')
         
-
+    def update(self):
+        # fake.credit_card_provider()
+        # fake.credit_card_number()
+        # fake.credit_card_expire()
+        # fake.credit_card_security_code()
+        self.inputs['Type'].default_value = fake.credit_card_provider()
+        
+        if 'Number' in self.inputs:
+            self.inputs['Number'].default_value = fake.credit_card_number()
+            
+        if 'Expiry' in self.inputs:
+            self.inputs['Expiry'].default_value = fake.credit_card_expire()
+            
+        if 'CVV' in self.inputs:
+            self.inputs['CVV'].default_value = fake.credit_card_security_code()
+            
+        if 'Number' in self.outputs:
+            out = self.inputs['Type'].default_value + '\n' + \
+            self.inputs['Number'].default_value + '   ' + \
+            self.inputs['CVV'].default_value
+            
+            self.ouputs['Number'].default_value = out
+            
+            for link in self.outputs['Number'].links:
+                link.to_socket.default_value = self.outputs['Number'].default_value
+                
+        
 # Social Security Number (SSN)
 # 498-52-4970
 class MyCustomSSN(Node, MyCustomTreeNode):
@@ -268,14 +326,71 @@ class MyCustomSSN(Node, MyCustomTreeNode):
     def execute(self, context):
         print('I am at execute()')
         
-     
-
+# Job
+#      
+class MyCustomJob(Node, MyCustomTreeNode):
+    bl_idname = 'CustomJob'
+    bl_label  = 'Job'
+    
+    def init(self, context):
+        self.inputs.new('NodeSocketString', 'Job')
+        
+        self.outputs.new('NodeSocketString', 'Job')
+    
+    
+    def update(self):
+        self.inputs['Job'].default_value = fake.job()
+        
+        if 'Job' in self.outputs:
+            self.outputs['Job'].default_value = self.inputs['Job'].default_value
+            
+            for link in self.outputs['Job'].links:
+                link.to_socket.default_value = self.outputs['Job'].default_value
 
     
- 
+
     
+# email
+#
+class MyCustomEmail(Node, MyCustomTreeNode):
+    bl_idname = 'CustomEmail'
+    bl_label  = 'Email'
+    
+    def init(self, context):
+        self.inputs.new('NodeSocketString', 'Email')
+        self.outputs.new('NodeSocketString', 'Email')
 
+    
+    def update(self):
+        self.inputs['Email'].default_value = fake.email()
+        
+        if 'Email' in self.outputs:
+            self.outputs['Email'].default_value = self.inputs['Email'].default_value
+            
+            for link in self.outputs['Email'].links:
+                link.to_socket.deault_value = self.outputs['Email'].default_value
+    
+# automotive - license plate number
+#
+class MyCustomLicPlate(Node, MyCustomTreeNode):
+    bl_idname = 'CustomLicPlate'
+    bl_label  = 'License Plate'
+    
+    def init(self, context):
+        self.inputs.new('NodeSocketString', 'License Plate')
+        self.outputs.new('NodeSocketString', 'License Plate')
+    
+    def update(self):
+        self.inputs['License Plate'].default_value = fake.license_plate()
+        
+        if 'License Plate' in self.outputs:
+            self.outputs['License Plate'].default_value = self.inputs['License Plate'].default_value
+            
+            for link in self.outputs['License Plate'].links:
+                link.to_socket.default_value = self.outputs['License Plate'].default_value
+                
 
+    
 #------------------------------------------------------------------------------
 ### Node Categories ###
 # Node categories are a python system for automatically
@@ -298,41 +413,25 @@ class MyNodeCategory(NodeCategory):
 
 # all categories in a list
 node_categories = [
-    # identifier, label, items list
-#    MyNodeCategory('SOMENODES', "Some Nodes", items=[
-#        # our basic node
-#        NodeItem("CustomNodeType"),
-#    ]),
-#    MyNodeCategory('OTHERNODES', "Other Nodes", items=[
-#        # the node item can have additional settings,
-#        # which are applied to new nodes
-#        # NOTE: settings values are stored as string expressions,
-#        # for this reason they should be converted to strings using repr()
-#        NodeItem("CustomNodeType", label="Node A", settings={
-#            "my_string_prop": repr("Lorem ipsum dolor sit amet"),
-#            "my_float_prop": repr(1.0),
-#        }),
-#        NodeItem("CustomNodeType", label="Node B", settings={
-#            "my_string_prop": repr("consectetur adipisicing elit"),
-#            "my_float_prop": repr(2.0),
-#        }),
-#    ]),
     MyNodeCategory('FakerNodes', 'Faker Library Nodes', items=[
         # nodes
         NodeItem('CustomNodePersonType',  label='Person'),
-        NodeItem('CustomNodeAddressType', label='Address'),
-        NodeItem('CustomNodePNumberType', label='Phone Number'),
-        NodeItem('CustomNodeCNameType', label='Company Name'),
-        NodeItem('CustomNodeBAccountType', label='Bank Account'),
         NodeItem('CustomSSN', label = 'SSN'),
-        NodeItem('CustomCCType', label = 'Credit Card'),
-        #NodeItem('CustomNodeStringType', label='Name'),
-        #NodeItem('CustomNodeIntType', label='House Number'),
-        #NodeItem('CustomNodeStringType', label='Street Name'),
-        NodeItem('CustomNodeStringType', label= 'String'),
-        NodeItem('CustomNodeIntType', label='Integer'),
+        NodeItem('CustomNodeAddressType', label='Address'),
         
-    
+        NodeItem('CustomNodePNumberType', label='Phone Number'),
+        NodeItem('CustomEmail', label='Email'),
+        
+        NodeItem('CustomJob', label = 'Job'),
+        NodeItem('CustomNodeCNameType', label='Company Name'),
+        
+        NodeItem('CustomNodeBAccountType', label='Bank Account'),
+        NodeItem('CustomCCType', label = 'Credit Card'),
+        
+        NodeItem('CustomLicPlate', label = 'License Plate'),
+        
+        #NodeItem('CustomNodeStringType', label= 'String'),
+        #NodeItem('CustomNodeIntType', label='Integer'),
     ]),
 ]
 
@@ -342,14 +441,21 @@ classes = (
     #MyCustomNode,
     MyCustomStringNode,
     MyCustomIntNode,
+    
     MyCustomPersonNode,
+    MyCustomSSN,
     MyCustomAddressNode,
+    
     MyCustomPhoneNumber,
+    MyCustomEmail,
+    
+    MyCustomJob,
     MyCustomCompanyName,
+    
     MyCustomBankAccount,
     MyCustomCreditCard,
-    MyCustomSSN,
     
+    MyCustomLicPlate,
 )
 
 
@@ -358,7 +464,7 @@ def register():
     for cls in classes:
         register_class(cls)
 
-    nodeitems_utils.register_node_categories('CUSTOM_NODES', node_categories)
+    #nodeitems_utils.register_node_categories('CUSTOM_NODES', node_categories)
 
 
 def unregister():

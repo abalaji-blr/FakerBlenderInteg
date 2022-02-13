@@ -17,13 +17,17 @@ Build data pipeline using Python Faker Library with Blender.
 
   
 
-
+---
 
 ### How to install python in Blender?
 
 
 
+---
+
 ### Snapshot of Faker Library Add-on in Blender
+
+<img src="./images/BlenderMenu.png" alt="BlenderMenu" style="zoom:50%;" />
 
 
 

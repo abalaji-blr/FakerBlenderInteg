@@ -275,7 +275,7 @@ class MyCustomCreditCard(Node, MyCustomTreeNode):
             self.inputs['Number'].default_value + '   ' + \
             self.inputs['CVV'].default_value
             
-            self.ouputs['Number'].default_value = out
+            self.outputs['Number'].default_value = out
             
             for link in self.outputs['Number'].links:
                 link.to_socket.default_value = self.outputs['Number'].default_value
@@ -464,7 +464,7 @@ def register():
     for cls in classes:
         register_class(cls)
 
-    #nodeitems_utils.register_node_categories('CUSTOM_NODES', node_categories)
+    nodeitems_utils.register_node_categories('CUSTOM_NODES', node_categories)
 
 
 def unregister():

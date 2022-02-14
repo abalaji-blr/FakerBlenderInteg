@@ -68,3 +68,21 @@ In the Python Interactive Console in Blender, do the following:-
 
 
 
+---
+
+### Demo - Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wi1FgPp4aeM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+### Next Steps
+
+This project is more focussed on **data source** also known as **data providers** by integrating **Faker** library to blender as an **add-on**. 
+
+The next step is to define the **data consumers** like UI forms, where we can connect all the Custom Node outputs to the consumer using links in Blender, which can unleash the power by just click of a button or drag and drop of an link between the blender custom nodes and the consumers.
+
+---
+
+
+

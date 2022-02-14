@@ -74,6 +74,11 @@ In the Python Interactive Console in Blender, do the following:-
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wi1FgPp4aeM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+or
+
+Seems, there is a rendering issue with GitHub with respect to iframes. Click the below image to play video:
+
+[<img src="./images/BlenderCustNodeAll.png" width="50%">](https://www.youtube.com/embed/wi1FgPp4aeM "Click to play video on youtube" )
 ---
 
 ### Next Steps
